@@ -10,7 +10,10 @@ class User(db.Model):
     mail = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False)
-    adres = db.Column(db.String, nullable=False)
+    town = db.Column(db.String, nullable=False)
+    street = db.Column(db.String, nullable=False)
+    building = db.Column(db.String, nullable=False)
+    flat = db.Column(db.Integer, nullable=False)
 
     order = db.relationship("OrderDetail")
 

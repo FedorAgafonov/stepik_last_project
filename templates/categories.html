@@ -14,7 +14,11 @@
               <h4 class="h5 card-title">{{ meal.title }}</h4>
               <p class="card-text">{{ meal.description }}</p>
             </div>
+            {% if is_auth %}
             <a href="/addtocart/{{ meal.id }}" class="btn btn-danger">В корзину</a>
+            {% else %}
+            <a href="{{ url_for('render_login_page') }}" class="btn btn-danger">В корзину</a>
+            {% endif %}
           </div>
         </div>
       </div>
