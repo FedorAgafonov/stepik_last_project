@@ -12,36 +12,36 @@ class User(db.Model):
     phone = db.Column(db.String, nullable=False)
     adres = db.Column(db.String, nullable=False)
 
+    order = db.relationship("OrderDetail")
+
+
+class OrderDetail(db.Model):
+    __tablename__ = 'orders_details'
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User")
+
+    meal_id = db.Column(db.Integer, db.ForeignKey("meals.id"))
+    meal = db.relationship("Meal")
+
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
     order = db.relationship("Order")
+
+    count = db.Column(db.Integer)
 
 
 class Order(db.Model):
     __tablename__ = 'orders'
 
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.DateTime)
-    summa = db.Column(db.Integer)
+
+    sum = db.Column(db.Float)
     status = db.Column(db.String)
-    mail = db.Column(db.String)
-    phone = db.Column(db.String)
-    adres = db.Column(db.String)
+    date = db.Column(db.DateTime)
 
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    user = db.relationship("User")
-
-    package = db.relationship("Package")
-
-
-class Package(db.Model):
-    __tablename__ = 'packages'
-
-    id = db.Column(db.Integer, primary_key=True)
-
-    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
-    order = db.relationship("Order")
-
-    meal_id = db.Column(db.Integer, db.ForeignKey("meals.id"))
-    meal = db.relationship("Meal")
+    orders = db.relationship("OrderDetail")
 
 
 class Meal(db.Model):
@@ -55,6 +55,8 @@ class Meal(db.Model):
 
     category_id = db.Column(db.Integer, db.ForeignKey("categorys.id"))
     category = db.relationship("Category")
+
+    orders_details = db.relationship("OrderDetail")
 
 
 class Category(db.Model):
