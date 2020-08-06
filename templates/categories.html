@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
 {% block container %}
-<main class="container mt-3">
+<main class="container">
+  <section class="jumbotron jumbotron-fluid">
+    <div class="text-center">
+      <h1 class="h2 m-2">Как на счет <br>{{ categories.title }}</h1>
+    </div>
+  </section>
   <section>
-    <h3 class="my-4">{{ categories.title }}</h3>
     <div class="row mt-4">
       {% for meal in product_category %}
       <div class="meal col-12 col-md-4">

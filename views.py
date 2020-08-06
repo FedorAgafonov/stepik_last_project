@@ -67,6 +67,7 @@ def render_categories_page(category_id):
 
 @app.route('/account/')
 def render_account_page():
+    print(session.get('user_id'))
     orders = db.session.query(Order).filter(Order.user_id == session.get('user_id')).all()
     details = {}
     for item in orders:
@@ -75,23 +76,20 @@ def render_account_page():
     return render_template("account.html", is_auth=login, orders=orders, details=details)
 
 
-@app.route('/addtodb/')
-def add_to_db():
+@app.route('/addtodb/<int:summa>')
+def add_to_db(summa):
     if session['cart']:
         cart = Counter(session.get('cart', []))
         now = datetime.datetime.now().strftime('%d-%m-%Y')
-        products = []
-        for meal in cart:
-            products.append(db.session.query(Meal).filter(Meal.id == meal).first())
-        summa = 0
-        for item in Counter(products):
-            summa += Counter(products)[item] * int(item.price)
+
         unique = str(session.get('user_id')) + random.choice(string.ascii_letters) + str(random.randint(1, 999))
         order = Order(unique_num=unique, sum=summa, status='accepted', date=now, user_id=session.get('user_id'))
         db.session.add(order)
+
         for item in cart:
             detail = OrderDetail(user_id=session.get('user_id'), meal_id=item, unique_id=unique, count=cart[item])
             db.session.add(detail)
+
         db.session.commit()
         session.pop('cart')
         return redirect('/account/')

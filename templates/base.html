@@ -31,15 +31,21 @@
 </head>
 
 <body>
-  <header class="container mt-3">
-    <nav class="py-1 navbar navbar-dark bg-dark">
+  <header class="container">
+    <nav class=" navbar navbar-dark bg-dark">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0 text-white">
         <p class=" h5 my-2 text-white bg-dark"><a href="{{ url_for('render_main_page') }}" class="text-white">Fedcher Delivery</a></p>
       </ul>
       {% if is_auth %}
-      <a href="{{ url_for('render_cart_page') }}" class="btn btn-warning btn-sm ml-4">Корзина</a>
-      <a href="{{ url_for('render_account_page') }}" class="btn btn-warning btn-sm ml-4">Заказы</a>
-      <a href="{{ url_for('render_logout_page') }}" class="btn btn-warning btn-sm ml-4">Выйти</a>
+      <div class="profile">
+        <div class="hover-profile">
+          <a href="{{ url_for('render_cart_page') }}" class="cart btn btn-warning btn-sm ml-4">Корзина</a>
+          <a href="{{ url_for('render_account_page') }}" class="order btn btn-warning btn-sm ml-4">Мои зказы</a>
+          <a href="#" class="data btn btn-warning btn-sm ml-4">Мои данные</a>
+          <a href="{{ url_for('render_logout_page') }}" class="out btn btn-warning btn-sm ml-4">Выйти</a>
+        </div>
+        <div class="header-profile h5 text-white bg-dark navbar-dark">Профиль</div>
+      </div>
       {% else %}
       <a href="{{ url_for('render_login_page') }}" class="btn btn-warning btn-sm ml-4">Войти</a>
       <a href="{{ url_for('render_register_page') }}" class="btn btn-warning btn-sm ml-4">Зарегистрироваться</a>
