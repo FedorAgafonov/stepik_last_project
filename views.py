@@ -1,10 +1,12 @@
 from flask import render_template, session, redirect, request
 import datetime
+import random
+import string
 from collections import Counter
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import app
-from models import db, Category, Meal, User
+from models import db, Category, Meal, User, OrderDetail, Order
 from forms import LoginForm, RegistrationForm
 
 
@@ -21,27 +23,27 @@ def render_main_page():
     return render_template("main.html", categories=clean_categories, meals=category_meal, is_auth=login)
 
 
-@app.route('/addtocart/<meal_id>')
+@app.route('/addtocart/<int:meal_id>')
 def add_to_cart(meal_id):
 
     cart = session.get("cart", [])
     cart.append(meal_id)
     session["cart"] = cart
-
+    print(1)
     return redirect('/cart/')
 
 
 @app.route('/deletefromcart/<int:meal_id>')
 def delete_from_cart(meal_id):
     cart = session.get("cart", [])
-    meal_index = cart.index(str(meal_id))
+    meal_index = cart.index(meal_id)
     cart.pop(meal_index)
     session["cart"] = cart
     return redirect('/cart/')
 
 
 @app.route('/cart/')
-def render_portfolio_page():
+def render_cart_page():
     cart = session.get("cart", [])
     products = []
     for meal in cart:
@@ -65,8 +67,36 @@ def render_categories_page(category_id):
 
 @app.route('/account/')
 def render_account_page():
+    orders = db.session.query(Order).filter(Order.user_id == session.get('user_id')).all()
+    details = {}
+    for item in orders:
+        details[item.unique_num] = db.session.query(OrderDetail.count, Meal.title, Meal.price * OrderDetail.count).join(Meal).filter(db.and_(OrderDetail.unique_id == item.unique_num, OrderDetail.meal_id == Meal.id)).all()
     login = session.get('is_auth')
-    return render_template("account.html", is_auth=login)
+    return render_template("account.html", is_auth=login, orders=orders, details=details)
+
+
+@app.route('/addtodb/')
+def add_to_db():
+    if session['cart']:
+        cart = Counter(session.get('cart', []))
+        now = datetime.datetime.now().strftime('%d-%m-%Y')
+        products = []
+        for meal in cart:
+            products.append(db.session.query(Meal).filter(Meal.id == meal).first())
+        summa = 0
+        for item in Counter(products):
+            summa += Counter(products)[item] * int(item.price)
+        unique = str(session.get('user_id')) + random.choice(string.ascii_letters) + str(random.randint(1, 999))
+        order = Order(unique_num=unique, sum=summa, status='accepted', date=now, user_id=session.get('user_id'))
+        db.session.add(order)
+        for item in cart:
+            detail = OrderDetail(user_id=session.get('user_id'), meal_id=item, unique_id=unique, count=cart[item])
+            db.session.add(detail)
+        db.session.commit()
+        session.pop('cart')
+        return redirect('/account/')
+    else:
+        return redirect('/cart/')
 
 
 @app.route('/login/', methods=["GET", "POST"])
@@ -83,7 +113,6 @@ def render_login_page():
             return redirect('/')
         else:
             error_msg = "Неверное имя пользователя или пароль"
-
     return render_template("login.html", form=form, error_msg=error_msg)
 
 
@@ -118,7 +147,7 @@ def render_logout_page():
     if session.get("is_auth"):
         session.pop("is_auth")
         session.pop("user_id")
-        if session.pop('cart'):
+        if session.pop('cart', []):
             session.pop('cart')
     return redirect("/login")
 

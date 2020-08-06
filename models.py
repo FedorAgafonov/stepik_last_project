@@ -15,7 +15,8 @@ class User(db.Model):
     building = db.Column(db.String, nullable=False)
     flat = db.Column(db.Integer, nullable=False)
 
-    order = db.relationship("OrderDetail")
+    order_details = db.relationship("OrderDetail")
+    orders = db.relationship("Order")
 
 
 class OrderDetail(db.Model):
@@ -29,8 +30,8 @@ class OrderDetail(db.Model):
     meal_id = db.Column(db.Integer, db.ForeignKey("meals.id"))
     meal = db.relationship("Meal")
 
-    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
-    order = db.relationship("Order")
+    unique_id = db.Column(db.String, db.ForeignKey("orders.unique_num"))
+    unique = db.relationship("Order")
 
     count = db.Column(db.Integer)
 
@@ -42,7 +43,11 @@ class Order(db.Model):
 
     sum = db.Column(db.Float)
     status = db.Column(db.String)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.String)
+    unique_num = db.Column(db.String)
+
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user = db.relationship("User")
 
     orders = db.relationship("OrderDetail")
 
