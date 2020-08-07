@@ -16,7 +16,7 @@
       {% for meal in meals[category[1]] %}
       <div class="meal col-12 col-md-4">
         <div class="card mb-3">
-          <img src=https://place-hold.it/300x200 width="300" height="200" class="card-img-top">
+          <img src="{{ url_for('static', filename='img/'+meal.picture) }}" width="300" height="200" class="card-img-top">
           <div class="card-body">
             <div class="description">
               <h4 class="h5 card-title ">{{ meal.title }}</h4>

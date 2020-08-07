@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block container %}
+  <main class="container">
+    <div class="mt-4">
+      <h1 class="h3 mt-4">{{ user.mail }}</h1>
+    </div>
+    <div class="row">
+      <div class="col-12">
+          {% with confirmations = get_flashed_messages() %}
+            {% if confirmations %}
+                {%- for confirmation in confirmations %}
+                <div style="color:green;">{{ confirmation }}</div>
+                {% endfor -%}
+            {% endif %}
+          {% endwith %}
+
+          {% for field in form.errors %}
+            {% for error in form.errors[field] %}
+            <div style="color:red;">
+                {{error}}
+            </div>
+            {% endfor %}
+          {% endfor %}
+          <p class="mt-4 text-danger">{{ error_msg }}</p>
+          <div class="row truble mx-auto form-label-group mt-3">
+              <div class="col-7 info">
+                <h3>Ваши данные:</h3>
+                <h4 class="mt-4">Ваш телефон - {{ user.phone }}</h4>
+                <div class="">
+                    <h4 class="mt-4">Ваш адрес:</h4>
+                    <h5 class="ml-4">Ваш город - {{ user.town }}</h5>
+                    <h5 class="ml-4">Ваша улица - {{ user.street }}</h5>
+                    <h5 class="ml-4">Ваш дом - {{ user.building }}</h5>
+                    <h5 class="ml-4">Ваша квартира - {{ user.flat }}</h5>
+                </div>
+              </div>
+              <div class="col-4 info">
+                <form class="form-signin" method="POST" action="{{ url_for('render_profile_page') }}">
+                    <h3>Смена пароля:</h3>
+                    <div class="mt-4">
+                        {{ form.csrf_token }}
+                        {{ form.password.label }}
+                        {{ form.password(class_="form-control") }}
+                    </div>
+                    <div class="mt-4">
+                        {{ form.confirm_password.label }}
+                        {{ form.confirm_password(class_="form-control") }}
+                    </div>
+                    <button class="btn btn-lg btn-danger btn-block mt-4" type="submit">Сохранить</button>
+                </form>
+              </div>
+          </div>
+          <div class="checkbox mb-3"></div>
+      </div>
+    </div>
+  </main>
+{% endblock %}

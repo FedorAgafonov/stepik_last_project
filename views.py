@@ -1,4 +1,4 @@
-from flask import render_template, session, redirect, request
+from flask import render_template, session, redirect, request, flash
 import datetime
 import random
 import string
@@ -7,7 +7,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import app
 from models import db, Category, Meal, User, OrderDetail, Order
-from forms import LoginForm, RegistrationForm
+from forms import LoginForm, RegistrationForm, ChangeForm
 
 
 @app.route('/')
@@ -23,13 +23,12 @@ def render_main_page():
     return render_template("main.html", categories=clean_categories, meals=category_meal, is_auth=login)
 
 
-@app.route('/addtocart/<int:meal_id>')
+@app.route('/addtocart/<meal_id>')
 def add_to_cart(meal_id):
 
     cart = session.get("cart", [])
-    cart.append(meal_id)
+    cart.append(int(meal_id))
     session["cart"] = cart
-    print(1)
     return redirect('/cart/')
 
 
@@ -67,7 +66,6 @@ def render_categories_page(category_id):
 
 @app.route('/account/')
 def render_account_page():
-    print(session.get('user_id'))
     orders = db.session.query(Order).filter(Order.user_id == session.get('user_id')).all()
     details = {}
     for item in orders:
@@ -126,8 +124,9 @@ def render_register_page():
         street = form.street.data
         building = form.building.data
         flat = form.flat.data
-        get_user = db.session.query(User).filter(User.mail == mail).first()
-        if get_user:
+        get_user_mail = db.session.query(User).filter(User.mail == mail).first()
+        get_user_phone = db.session.query(User).filter(User.phone == phone).first()
+        if get_user_mail or get_user_phone:
             error_msg = "Пользователь уже существует"
         else:
             user = User(mail=mail, password=generate_password_hash(password), phone=phone, town=town, street=street, building=building, flat=flat)
@@ -150,7 +149,21 @@ def render_logout_page():
     return redirect("/login")
 
 
-@app.route('/ordered/')
-def render_ordered_page():
-    return render_template("ordered.html")
+@app.route('/profile/', methods=["GET", "POST"])
+def render_profile_page():
+    form = ChangeForm()
+    error_msg = ""
+
+    if request.method == "POST":
+        if form.validate_on_submit():
+            user = User.query.filter_by(id=session.get('user_id')).first()
+            user.password = generate_password_hash(form.password.data)
+            db.session.add(user)
+            db.session.commit()
+
+            flash(f"Ваш пароль изменён")
+
+    user = db.session.query(User).filter(User.id == session.get('user_id')).first()
+    login = session.get('is_auth')
+    return render_template("profile.html", form=form, is_auth=login, user=user, error_msg=error_msg)
 

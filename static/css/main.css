@@ -103,3 +103,18 @@ body {
 .order-boss:hover .ordered {
   display: block;
 }
+
+.info {
+  padding: 10px;
+  margin-left: 15px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.bn-red {
+  height: 45px;
+}
+
+.truble {
+  max-width: 700px;
+}
