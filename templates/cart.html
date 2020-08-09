@@ -2,31 +2,58 @@
 
 {% block container %}
   <main class="container">
-    {% if products|length == 0 %}
-    <div class="mx-auto text-center">
-      <h1 class="h3 my-4">Ваша корзина пуста!<br>Наберите товаров!</h1>
-    </div>
-    {% else %}
     <h1 class="h3 my-4">Корзина</h1>
-      <div class="">
-        <h4 class="mb-3 col-7 mb-5">{{ count }} блюда в корзине</h4>
+    {% if products|length != 0 %}
+    <div class="row mt-5">
+      <div class="col-4">
+        <form class="" method="POST" action="{{ url_for('add_to_db', summa=summa) }}">
+          <h4 class="">Ваши данные</h4>
+          <div class=" md-4 order-md-1">
+            <div class="">
+              <p class="">{{ form.name.label(class_="mb-0") }}</p>
+              {{ form.csrf_token }}
+              {{ form.name(class_="form-control") }}
+            </div>
+          </div>
+          <div class=" md-4 order-md-1">
+            <div class="">
+              <p class="">{{ form.address.label() }}</p>
+              {{ form.csrf_token }}
+              {{ form.address(class_="form-control") }}
+            </div>
+          </div>
+          <div class="md-4 form-label-group">
+            <div class="">
+              <p class="">{{ form.phone.label() }}</p>
+              {{ form.csrf_token }}
+              {{ form.phone(class_="form-control") }}
+            </div>
+          </div>
+          <button type="submit" class=" mt-3 mb-5 btn btn-danger">Оформить заказ</button>
+        </form>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-7">
+        <h4 class="col-7 mb-5">{{ products|length }} блюд(a) в корзине</h4>
         <table class="table">
           <tbody>
-            {% for meal in products %}
+          {% for item in products %}
             <tr>
-              <th scope="row">{{ meal.title }}</th>
+              <th scope="row">{{ item.title }}</th>
               <td></td>
-              <td>{{ products[meal] }}</td>
-              <td>{{ meal.price|int * products[meal]|int }} руб.</td>
-              <td><a class="text-danger" href="/deletefromcart/{{ meal.id }}">Удалить</a></td>
+              <td>{{ products[item] }}</td>
+              <td>{{ products[item]|int * item.price|int }}</td>
+              <td><a class="text-danger" href="{{ url_for('delete_from_cart', meal_id=item.id) }}">Удалить</a></td>
             </tr>
-            {% endfor %}
+          {% endfor %}
           </tbody>
         </table>
         <hr>
-        <p class="display-4 my-2 ">{{ summa }} руб</p>
-        <a href="{{ url_for('add_to_db', summa=summa) }}" class=" mt-3 mb-5 btn btn-danger">Оформить заказ</a>
+        <p class="display-4 my-2 ">{{ summa }} руб.</p>
       </div>
+    </div>
+    {% else %}
+    <h1>Ваша корзина пуста!</h1>
     {% endif %}
   </main>
 {% endblock %}

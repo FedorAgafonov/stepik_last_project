@@ -9,11 +9,6 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     mail = db.Column(db.String, nullable=False)
     password = db.Column(db.String, nullable=False)
-    phone = db.Column(db.String, nullable=False)
-    town = db.Column(db.String, nullable=False)
-    street = db.Column(db.String, nullable=False)
-    building = db.Column(db.String, nullable=False)
-    flat = db.Column(db.Integer, nullable=False)
 
     order_details = db.relationship("OrderDetail")
     orders = db.relationship("Order")
@@ -45,6 +40,9 @@ class Order(db.Model):
     status = db.Column(db.String)
     date = db.Column(db.String)
     unique_num = db.Column(db.String)
+    address = db.Column(db.String, nullable=False)
+    phone = db.Column(db.String, nullable=False)
+    name = db.Column(db.String, nullable=False)
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     user = db.relationship("User")

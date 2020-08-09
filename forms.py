@@ -14,12 +14,6 @@ class RegistrationForm(FlaskForm):
     mail = StringField("Почта:", validators=[DataRequired()])
     password = PasswordField("Пароль:", validators=[DataRequired()])
 
-    phone = StringField('Телефон:', [InputRequired(message="Введите что-нибудь")])
-    town = StringField('Город:', [InputRequired(message="Введите что-нибудь")])
-    street = StringField('Улица:', [InputRequired(message="Введите что-нибудь")])
-    building = StringField('Дом:', [InputRequired(message="Введите что-нибудь")])
-    flat = StringField('Квартира:', [InputRequired(message="Введите что-нибудь")])
-
 
 class ChangeForm(FlaskForm):
     password = PasswordField(
@@ -33,5 +27,7 @@ class ChangeForm(FlaskForm):
     confirm_password = PasswordField("Пароль ещё раз:")
 
 
-class CountForm(FlaskForm):
-    count = IntegerField('Количество товара', [InputRequired(message="Введите что-нибудь")])
+class OrderForm(FlaskForm):
+    name = StringField('Ваше имя:', [InputRequired(message="Введите что-нибудь")])
+    address = StringField('Вас адрес:', [InputRequired(message="Введите что-нибудь")])
+    phone = StringField('Ваш телефон:', [InputRequired(message="Введите что-нибудь")])

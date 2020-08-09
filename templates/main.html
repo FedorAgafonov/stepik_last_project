@@ -2,7 +2,12 @@
 
 {% block container %}
 <main class="container">
-  <section class="jumbotron jumbotron-fluid">
+<!--  <section class="russia">-->
+<!--    <div class="text-center">-->
+<!--      <h4 class="">Товар доблен в корзину</h4>-->
+<!--    </div>-->
+<!--  </section>-->
+  <section class="logo jumbotron jumbotron-fluid banner-main">
     <div class="text-center">
       <h1 class="h2 mt-5 m-2">Всякая еда, чтобы кушать.</h1>
       <h2 class="h3">Прилетит к вам сама</h2>
@@ -22,13 +27,14 @@
               <h4 class="h5 card-title ">{{ meal.title }}</h4>
               <p class="card-text">{{ meal.description }}</p>
             </div>
-            <div class="row btn-inp">
-            {% if is_auth %}
-            <a href="{{ url_for('add_to_cart', meal_id=meal.id) }}" class="mx-3 btn btn-danger">В корзину</a>
-            {% else %}
-            <a href="{{ url_for('render_login_page') }}" class="col-5 btn btn-danger">В корзину</a>
-            {% endif %}
-            </div>
+            <form method="POST" action="{{ url_for('add_to_cart', meal_id=meal.id) }}">
+              <h4 class="mt-2 card-text mb-3">{{ meal.price }} рублей</h4>
+              <div class="row btn-inp mx-2">
+                  <button class="btn m-0 p-0 col-6 btn-danger text-center" type="submit">В корзину</button>
+<!--                  <a href="{{ url_for('add_to_cart', meal_id=meal.id) }}" class=" col-6 mx-3 btn btn-danger">В корзину</a>-->
+                  <input class="col-4 input_t" name="number" type="number" min="0" max="10" step="1" value="1">
+              </div>
+            </form>
           </div>
         </div>
       </div>

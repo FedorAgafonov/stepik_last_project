@@ -5,6 +5,7 @@
   <title>Stepik Delivery</title>
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 
 <body>
@@ -20,17 +21,13 @@
       <div class="">
         <form class="form-signin pt-5" method="POST" action="{{ url_for('render_register_page') }}">
         <div class="row mb-4">
-          <div class="col-5">
+          <div class="col-5 mx-auto">
             <p class="mt-4 text-danger">{{ error_msg }}</p>
 
             <div class="form-label-group">
               <p class="text-muted">{{ form.mail.label }}</p>
               {{ form.csrf_token }}
               {{ form.mail(class_="form-control") }}
-
-              <p class="text-muted">{{ form.phone.label(class_="mt-3") }}</p>
-              {{ form.csrf_token }}
-              {{ form.phone(class_="form-control") }}
             </div>
 
             <div class="form-label-group mt-3">
@@ -38,41 +35,13 @@
               {{ form.csrf_token }}
               {{ form.password(class_="form-control") }}
             </div>
-          </div>
-
-          <div class="col-6">
-            <p class="mt-4 text-danger">{{ error_msg }}</p>
-            <div class="row form-label-group mt-3">
-              <div class="col">
-              <p class="text-muted">{{ form.town.label }}</p>
-              {{ form.csrf_token }}
-              {{ form.town(class_="form-control") }}
-              </div>
-              <div class="col">
-              <p class="text-muted">{{ form.street.label }}</p>
-              {{ form.csrf_token }}
-              {{ form.street(class_="form-control") }}
-              </div>
-            </div>
-            <div class="row form-label-group mt-3">
-              <div class="col">
-              <p class="text-muted">{{ form.building.label }}</p>
-              {{ form.csrf_token }}
-              {{ form.building(class_="form-control") }}
-              </div>
-              <div class="col">
-              <p class="text-muted">{{ form.flat.label }}</p>
-              {{ form.csrf_token }}
-              {{ form.flat(class_="form-control") }}
-              </div>
+            <div class="mt-4 flex-n">
+              <button class="btn mt-3 btn-lg btn-danger bn-red btn-wtf" type="submit">Зарегистрироваться</button>
+              <a class="ml-2 mt-3 btn btn-lg btn-danger bn-red btn-wtf" type="submit" href="{{ url_for('render_main_page') }}">На главную</a>
             </div>
           </div>
+        </div>
 
-        </div>
-        <div class="row text-center p-0 m-0">
-          <button class="col-5 btn btn-lg btn-danger bn-red" type="submit">Зарегистрироваться</button>
-          <a class="ml-2 col-5 btn btn-lg btn-danger bn-red" type="submit" href="{{ url_for('render_main_page') }}">На главную</a>
-        </div>
         </form>
       </div>
     </div>

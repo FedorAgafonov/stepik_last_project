@@ -1,6 +1,24 @@
+@keyframes closing {
+  from {
+    opacity: 0.7;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 body {
   padding: 0;
-  margin: 0;
+  margin: 0 auto;
+}
+
+.alert {
+  max-width: 1110px;
+  margin: 10px auto;
+}
+
+.main {
+  position: relative;
 }
 
 .navbar {
@@ -14,18 +32,26 @@ body {
   height: 100%;
 }
 
+.profile-else {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  height: 100%;
+}
+
 .header-profile {
   position: relative;
   text-align: right;
   padding: 10px;
   padding-left: 0;
   padding-top: 23px;
-  width: 130px;
+  width: 120px;
 }
 
 .hover-profile {
   width: 1px;
   position: relative;
+  overflow: hidden;
   margin-right: 5px;
   border-left: 1px solid white;
   transition: width 0.5s cubic-bezier(0, 0, 1, 1);
@@ -35,7 +61,7 @@ body {
   display: inline-block;
   position: absolute;
   width: 101px;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .cart {
@@ -58,24 +84,43 @@ body {
   transition: left 0.5s cubic-bezier(0, 0, 1, 1);
 }
 
-.profile:hover .hover-profile {
-  width: 540px;
+.sign {
+  left: 0px;
+  transition: left 0.5s cubic-bezier(0, 0, 1, 1);
 }
 
-.profile:hover .cart {
-  left: 10px;
+.reg {
+  left: 0px;
+  width: 260px !important;
+  transition: left 0.5s cubic-bezier(0, 0, 1, 1);
+}
+
+.profile:hover .hover-profile {
+  width: 400px;
+}
+
+.profile-else:hover .hover-profile {
+  width: 440px;
+}
+
+.profile-else:hover .sign {
+  left: 11px;
+}
+
+.profile-else:hover .reg {
+  left: 151px;
 }
 
 .profile:hover .order {
-  left: 131px;
+  left: 10px;
 }
 
 .profile:hover .data {
-  left: 251px;
+  left: 131px;
 }
 
 .profile:hover .out {
-  left: 371px;
+  left: 251px;
 }
 
 .meal {
@@ -84,7 +129,6 @@ body {
 
 .meal a {
     height: 38px;
-    margin-top: 20px;
     width: 100%;
 }
 
@@ -93,15 +137,6 @@ body {
     flex-wrap: wrap;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.ordered {
-  display: none;
-  padding-bottom: 0;
-}
-
-.order-boss:hover .ordered {
-  display: block;
 }
 
 .info {
@@ -118,3 +153,67 @@ body {
 .truble {
   max-width: 700px;
 }
+
+.banner-main {
+  background-image: url(../img/eda.jpg);
+  background-size: 100%;
+}
+
+.Суши {
+  background-image: url(../img/sushi.jpg);
+  background-size: 100%;
+}
+
+.Стритфуд {
+  background-image: url(../img/street.jpg);
+  background-size: 100%;
+}
+
+.Пицца {
+  background-image: url(../img/pizza.jpg);
+  background-size: 100%;
+  color: white;
+}
+
+.Паста {
+  background-image: url(../img/pasta.jpg);
+  background-size: 100%;
+  color: white;
+}
+
+.flex-n {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.btn-wtf {
+  width: 49%;
+}
+
+.input_t {
+  height: 38px;
+}
+
+.btn-inp {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* .russia {
+  position: fixed;
+  z-index: 100;
+  left: 64%;
+
+  width: 350px;
+  height: 50px;
+  padding: 8px;
+  background: #00FF00;
+  opacity: 0;
+  color: white;
+  border: 1px solid #f1f1f1;
+  border-radius: 10px;
+
+  animation-duration: 5s;
+  animation-name: closing;
+} */
